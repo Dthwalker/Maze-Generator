@@ -1,0 +1,75 @@
+* {
+    font-family: 'Inconsolata', monospace;
+    color: white;
+    background-color: rgb(10,10,10);
+}
+
+html, body {
+    width: 100%;
+    margin: 0;
+    background-color: rgb(10,10,10);
+    font-family: 'Inconsolata', monospace;
+}
+
+.main {
+    display: grid;
+    place-content: center;
+    margin-top: 40px;
+}
+
+h1 {
+    margin-bottom: 40px;
+}
+
+#maze {
+    justify-self: center;
+    margin-bottom: 100px;
+}
+
+.nav {
+    padding: 10px;
+    background-color: rgb(10,10,10);
+    outline: 2px dashed white;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+}
+
+button {
+    border: 0;
+    outline: 1px solid white;
+    font-size: 18px;
+    padding: 5px 8px;
+    transition: 0.3s;
+    font-weight: 700;
+}
+
+button:hover {
+    background-color: rgb(200,200,200);
+    color: rgb(10,10,10);
+}
+
+#timer {
+    grid-column: 1/6;
+    margin-bottom: 10px;
+}
+
+.size {
+    margin-bottom: 20px;
+}
+
+.size > div {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+input {
+    outline: 1px solid white;
+    border: 0;
+    font-size: 18px;
+}

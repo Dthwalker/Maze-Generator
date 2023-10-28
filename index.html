@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="main">
+    <h1>Maze Generator</h1>
+    <div class="size">
+        <div>width: <input type="number" value="21"></div>
+        <div>height: <input type="number" value="15"></div>
+        <div>size: <input type="number" value="20"></div>
+    </div>
+    <canvas id="maze"></canvas>
+    <div class="nav">
+        <div id="timer">Gen: 0</div>
+        <button>Next</button>
+        <button id="start">Start</button>
+        <button>Reset</button>
+        <button>Show Path</button>
+        <button>Show Walker</button>
+    </div>
+</div>
+
+<script type="module" src="/js/Main.js"></script>
+</body>
+</html>
