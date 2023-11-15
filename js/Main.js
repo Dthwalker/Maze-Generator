@@ -17,18 +17,18 @@ class Main {
         this.angle     = this.s * 0.3
 
         this.canvas = new Canvas(this.w, this.h, this.s, this.angle);
-        this.maze   = new Maze(this.w, this.h, this.s, this.startPos);
+        this.maze   = new Maze(this.w, this.h, this.s, this.startPos, this.gSpeed);
         this.controls();
 
         this.loop();
     }
 
-    static get width()  { return Number(this.inputs[0].value) }
-    static get height() { return Number(this.inputs[1].value) }
-    static get size()   { return Number(this.inputs[2].value) }
+    static get width()    { return Number(this.inputs[0].value) }
+    static get height()   { return Number(this.inputs[1].value) }
+    static get size()     { return Number(this.inputs[2].value) }
+    static get gSpeed()   { return Number(this.inputs[3].value) }
 
     static resize() {
-        console.log(this.width)
         this.w         = this.width % 2 == 0 ? this.width+1 : this.width;
         this.h         = this.height % 2 == 0 ? this.height + 1 : this.height;
         this.inputs[0].value = this.w;
@@ -41,10 +41,11 @@ class Main {
         this.sWalker = true;
         this.resize();
         this.canvas = new Canvas(this.w, this.h, this.s, this.angle);
-        this.maze    = new Maze(this.w, this.h, this.s, this.startPos);
+        this.maze    = new Maze(this.w, this.h, this.s, this.startPos, this.gSpeed);
         console.log(this.maze.data)
         this.timer   = 0;
         document.querySelector('#start').innerHTML = 'Start';
+        document.querySelector('#fast').innerHTML = 'Fast Generate';
         this.draw();
     }
 
@@ -66,6 +67,11 @@ class Main {
                         this.sWalker = !this.sWalker;
                         this.draw();
                     }
+                    if (i == 5 ) {
+                        this.start = !this.start;
+                        e.innerHTML = this.start ? 'Pause' : 'Fast Generate';
+                        this.fastLoop();
+                    }
                 }
             });
     }
@@ -80,6 +86,16 @@ class Main {
         this.draw();
     }
 
+    static fastGenerate() {
+        if (this.maze.end) {
+            this.end();
+            return
+        }
+        this.timer += this.gSpeed;
+        this.maze.fastGenerate();
+        this.draw();
+    }
+
     static draw() {
         this.canvas.update();
         this.maze.draw(this.canvas.ctx, this.path, this.sWalker);
@@ -91,6 +107,7 @@ class Main {
         this.draw();
         console.log(this.maze.data)
         document.querySelector('#start').innerHTML = 'Start';
+        document.querySelector('#fast').innerHTML  = 'Fast Generate';
         document.querySelector('#timer').innerHTML = `Generation is ready: ${this.timer}`
     }
 
@@ -104,6 +121,19 @@ class Main {
         if (this.start) {
             this.generate();
             setTimeout(this.loop.bind(this), this.speed);
+        }
+    }
+
+    static fastLoop() {
+        this.draw();
+        if (this.maze.end) {
+            this.end();
+            return
+        }
+
+        if (this.start) {
+            this.fastGenerate();
+            setTimeout(this.fastLoop.bind(this), this.speed);
         }
     }
 

@@ -4,7 +4,7 @@ import Walker from "./Walker.js";
 
 export default class Maze {
 
-    constructor(w, h, s, start) {
+    constructor(w, h, s, start, speed) {
         this.w      = w;
         this.h      = h;
         this.size   = s;
@@ -12,9 +12,11 @@ export default class Maze {
         this.start  = [this.w, this.h].map(e => {
             return Math.floor(e / 2) % 2 == 0 ? Math.floor(e / 2) - 1 : Math.floor(e / 2)
         })
-        console.log(this.start)
         this.walker = new Walker(...this.start);
+        this.steps  = [{x:this.walker.x, y:this.walker.y}];
+        this.speed  = speed < 1 ? 1 : speed;
         this.end    = false;
+        this.timer  = 0;
 
         this.createData(this.start);
     }
@@ -90,30 +92,39 @@ export default class Maze {
     }
 
     generate() {
-        let position = new Set();
+        this.steps = this.steps.filter(e => {
+            return this.checkPos(e.x, e.y).length > 0;
+        })
 
-        this.forOdd((x,y) => {
-            this.cellOdd(x, y, ()=>{position.add(this.data[y][x])});
-        });
-        position = [...position];
-
-        let rPos   = position[this.random(0, position.length - 1)];
-        if (!rPos) {
+        let oldPose = this.steps[this.random(0, this.steps.length - 1)];
+        if (!oldPose) {
             this.end = true;
             return
         }
-        this.walker = new Walker(rPos.x, rPos.y)
+        
+        this.walker = new Walker(oldPose.x, oldPose.y);
 
-        let newPos = this.checkPos(rPos.x, rPos.y);
-        newPos = newPos[this.random(0, newPos.length - 1)];
+        let newPose = this.checkPos(oldPose.x, oldPose.y);
+        newPose = newPose[this.random(0, newPose.length - 1)];
 
-        [this.walker.x, this.walker.y] = [newPos.x, newPos.y];
-        this.data[newPos.y][newPos.x].isWall  = 
-        this.data[newPos.y][newPos.x].isVisit = true
+        [this.walker.x, this.walker.y] = [newPose.x, newPose.y];
+        
+        this.data[newPose.y][newPose.x].isWall  = 
+        this.data[newPose.y][newPose.x].isVisit = true;
+
         let wall = this.walker.wall
         this.data[wall.y][wall.x].isWall = true
 
+        this.steps.push({x:newPose.x, y:newPose.y});
+        this.timer++
+    }
 
+    fastGenerate() {
+        while (this.timer < this.speed) {
+            this.timer++
+            this.generate()
+        }
+        this.timer = -1;
     }
 
 }

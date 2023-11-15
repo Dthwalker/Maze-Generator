@@ -31,8 +31,7 @@ h1 {
     background-color: rgb(0,0,0);
     outline: 2px dashed white;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     position: fixed;
     bottom: 20px;
     left: 20px;
@@ -53,7 +52,7 @@ button:hover {
 }
 
 #timer {
-    grid-column: 1/6;
+    grid-column: 1/7;
     margin-bottom: 10px;
 }
 
