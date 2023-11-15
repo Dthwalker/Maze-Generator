@@ -9,10 +9,14 @@ export default class Maze {
         this.h      = h;
         this.size   = s;
         this.data   = [];
-        this.walker = new Walker(...start);
+        this.start  = [this.w, this.h].map(e => {
+            return Math.floor(e / 2) % 2 == 0 ? Math.floor(e / 2) - 1 : Math.floor(e / 2)
+        })
+        console.log(this.start)
+        this.walker = new Walker(...this.start);
         this.end    = false;
 
-        this.createData(start);
+        this.createData(this.start);
     }
 
     random(min, max){
@@ -32,7 +36,7 @@ export default class Maze {
         
         let startBlock = this.data[start[1]][start[0]]
         startBlock.isVisit = startBlock.isWall = true;
-        
+
         let ee = this.random(0,1)
         if (ee) {
             this.data[0+1][0].isWall = this.data[this.h - 2][this.w - 1].isWall = true
